@@ -79,6 +79,7 @@ class Redis
         raise exec if exec.is_a?(CommandError)
 
         if exec.size < futures.size
+          Exceptional.context(:replies => replies, :exec => exec, :future => futures)
           # Some command wasn't recognized by Redis.
           raise replies.detect { |r| r.is_a?(CommandError) }
         end
